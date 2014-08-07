@@ -1,4 +1,5 @@
 <?php
+
 /*
  * CMSUtils - a module for Prestashop v1.6+
  * cms_selflink is port of the same CMS Made Simple tag (www.cmsmadesimple.org)
@@ -17,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class cmsutils_smarty extends Module {
 
     private static $_cache;
@@ -30,21 +32,39 @@ class cmsutils_smarty extends Module {
     }
 
     public static function cms_content($params) {
-        if(!isset($params['page']))
+        $smarty = Context::getContext()->smarty;
+        if (!isset($params['page']))
             return;
-        return self::get_cms_content($params['page'], 'content');
+        $result = self::get_cms_content($params['page'], 'content');
+        if (isset($params['assign'])) {
+            $smarty->assign(trim($params['assign']), $result);
+            return;
+        }
+        return $result;
     }
 
     public static function cms_title($params) {
-        if(!isset($params['page']))
+        $smarty = Context::getContext()->smarty;
+        if (!isset($params['page']))
             return;
-        return self::get_cms_content($params['page'], 'meta_title');
+        $result = self::get_cms_content($params['page'], 'meta_title');
+        if (isset($params['assign'])) {
+            $smarty->assign(trim($params['assign']), $result);
+            return;
+        }
+        return $result;
     }
 
     public static function cms_get_data($params) {
+        $smarty = Context::getContext()->smarty;
         if (!isset($params['block']))
             return;
-        return self::get_cms_content($params['page'], $params['block']);
+        $result = self::get_cms_content($params['page'], $params['block']);
+        if (isset($params['assign'])) {
+            $smarty->assign(trim($params['assign']), $result);
+            return;
+        }
+        return $result;
     }
 
     public static function cms_selflink($params) {
