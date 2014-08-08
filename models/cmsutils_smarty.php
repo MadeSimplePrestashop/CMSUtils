@@ -69,6 +69,8 @@ class cmsutils_smarty extends Module {
 
     public static function cms_selflink($params) {
         $smarty = Context::getContext()->smarty;
+        $link = Context::getContext()->link;
+
         $url = '';
         $urlparam = '';
         $label_side = 'left';
@@ -169,7 +171,8 @@ class cmsutils_smarty extends Module {
 
         // get our raw display data
         $name = $content->meta_title;
-        $url = $content->link_rewrite;
+        $url = $link->getCMSLink($pageid, $content->link_rewrite);
+
         if (isset($params['anchorlink']))
             $url .= '#' . ltrim($params['anchorlink'], '#');
         if ($urlparam != '')
